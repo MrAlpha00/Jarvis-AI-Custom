@@ -22,3 +22,7 @@ opencv-python
 numpy
 mss
 SpeechRecognition
+flask
+gunicorn
+python-dotenv
+
