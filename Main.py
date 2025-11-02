@@ -192,21 +192,27 @@ def MainExecution():
 
 
 def FirstThread():
-
     while True:
-
         CurrentStatus = GetMicrophoneStatus()
 
         if CurrentStatus == "True":
-            MainExecution()
+            try:
+                MainExecution()
+            except Exception as e:
+                print(f"Error in MainExecution: {e}")
+            
+            # ✅ Keep Jarvis always active after finishing a command
+            SetMicrophoneStatus("True")
+            SetAssistantStatus("Available...")
+
         else:
             AIStatus = GetAssistantStatus()
 
             if "Available..." in AIStatus:
-                sleep(0.1)
-
+                sleep(0.2)
             else:
                 SetAssistantStatus("Available...")
+
 
 
 def SecondThread():

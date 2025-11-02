@@ -21,5 +21,4 @@ google-generativeai
 opencv-python
 numpy
 mss
-playsound
 SpeechRecognition
