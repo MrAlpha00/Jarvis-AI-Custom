@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jarvis AI Chat</title>
+  <style>
+    body {
+      background-color: #0b0c10;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #chatbox {
+      width: 90%;
+      max-width: 500px;
+      height: 70vh;
+      overflow-y: auto;
+      background: #1f2833;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #45a29e;
+    }
+    #inputArea {
+      margin-top: 10px;
+      width: 90%;
+      max-width: 500px;
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #45a29e;
+      color: #0b0c10;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .user { color: #66fcf1; margin: 5px 0; }
+    .bot { color: #f1f1f1; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>🤖 Jarvis Web</h2>
+  <div id="chatbox"></div>
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Ask Jarvis..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatbox = document.getElementById("chatbox");
+      const userText = input.value.trim();
+      if (!userText) return;
+
+      chatbox.innerHTML += `<div class='user'><b>You:</b> ${userText}</div>`;
+      input.value = "";
+
+      const response = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: userText })
+      });
+
+      const data = await response.json();
+      const reply = data.answer || data.error || "No response";
+      chatbox.innerHTML += `<div class='bot'><b>Jarvis:</b> ${reply}</div>`;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
